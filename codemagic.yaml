@@ -1,5 +1,17 @@
 workflows:
-  sample-workflow:
-    name: Codemagic Sample Workflow
-    max_build_duration: 120
+  finbump-web:
+    name: FinBump Web Build
+    max_build_duration: 30
     instance_type: mac_mini_m2
+
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm ci
+
+      - name: Build FinBump
+        script: |
+          npm run build
+
+    artifacts:
+      - dist/**
