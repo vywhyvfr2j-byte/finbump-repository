@@ -1,0 +1,45 @@
+{
+  "name": "Habit Nudge",
+  "description": "Twice-weekly gentle nudge (Tuesday and Friday, 9am America/Chicago) asking users to finish the acts of support that are due or overdue. Sends at most one push per user and respects the twice-weekly habit-nudge toggle in Settings, the global push opt-out, quiet hours, and per-act notification flags.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * 2,5",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "habit_nudge",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "send_nudges": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-habit-nudge",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send the habit nudge",
+            "description": "One gentle push per user"
+          }
+        }
+      }
+    ]
+  }
+}

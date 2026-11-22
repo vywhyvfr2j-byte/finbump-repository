@@ -1,0 +1,83 @@
+{
+  "name": "PassCode",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "The shareable pass code string (e.g. KS-AB3XK9)"
+    },
+    "passType": {
+      "type": "string",
+      "enum": [
+        "annual",
+        "monthly"
+      ],
+      "description": "Whether this code grants a 1-year or 1-month Premium pass"
+    },
+    "packageId": {
+      "type": "string",
+      "description": "Product id of the family package that generated this pass credit"
+    },
+    "purchaserId": {
+      "type": "string",
+      "description": "User id of the purchaser who issued this pass"
+    },
+    "purchaserEmail": {
+      "type": "string",
+      "description": "Denormalized email of the purchaser for display"
+    },
+    "label": {
+      "type": "string",
+      "description": "Optional note about who this pass is for"
+    },
+    "usedBy": {
+      "type": "string",
+      "description": "User id who redeemed this pass"
+    },
+    "usedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "code",
+    "passType",
+    "purchaserId"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.purchaserId": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.purchaserId": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

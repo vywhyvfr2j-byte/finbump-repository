@@ -1,0 +1,50 @@
+{
+  "name": "AiUsageDaily",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Id of the user who made the AI calls"
+    },
+    "date": {
+      "type": "string",
+      "description": "YYYY-MM-DD UTC date string for the usage day"
+    },
+    "feature": {
+      "type": "string",
+      "description": "Which AI feature was used: suggest-gifts, generate-message, invoke-premium-llm"
+    },
+    "count": {
+      "type": "number",
+      "default": 1,
+      "description": "Number of AI calls today for this user+feature"
+    }
+  },
+  "required": [
+    "userId",
+    "date",
+    "feature"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

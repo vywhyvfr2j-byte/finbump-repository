@@ -1,0 +1,72 @@
+{
+  "name": "PassCredit",
+  "type": "object",
+  "properties": {
+    "ownerId": {
+      "type": "string",
+      "description": "User id of the purchaser who owns this shareable pass credit"
+    },
+    "passType": {
+      "type": "string",
+      "enum": [
+        "annual",
+        "monthly"
+      ],
+      "description": "Whether this credit redeems as a 1-year or 1-month Premium pass"
+    },
+    "packageId": {
+      "type": "string",
+      "description": "Product id of the family package that granted this credit"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "consumed"
+      ],
+      "default": "available",
+      "description": "available = not yet turned into a pass code; consumed = a pass code was generated from this credit"
+    },
+    "consumedBy": {
+      "type": "string",
+      "description": "User id who generated the pass code that consumed this credit (the purchaser)"
+    },
+    "consumedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "ownerId",
+    "passType"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.ownerId": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

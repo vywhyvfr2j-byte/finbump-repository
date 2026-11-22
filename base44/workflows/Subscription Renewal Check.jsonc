@@ -1,0 +1,45 @@
+{
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "subscription_renewal_check",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "refresh_subscriptions": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "sync-subscription-renewal",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Refresh subscription status",
+            "description": "Reads each subscription from Base44 Payments"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Subscription Renewal Check",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 8 * * 1",
+      "one_time_date": null,
+      "timezone": "America/New_York",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "description": "Every Monday morning, reads each stored subscription back from Base44 Payments so auto-renew state and subscription status stay current."
+}

@@ -1,0 +1,76 @@
+{
+  "name": "AppSuggestion",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "Suggestion category chosen from a fixed list (New feature idea, Improve existing feature, Bug report, etc.)"
+    },
+    "message": {
+      "type": "string",
+      "description": "The user's freeform suggestion text"
+    },
+    "userEmail": {
+      "type": "string",
+      "description": "Denormalized email of the contributor, used to notify the winner"
+    },
+    "userName": {
+      "type": "string",
+      "description": "Denormalized display name of the contributor"
+    },
+    "monthKey": {
+      "type": "string",
+      "description": "YYYY-MM (America/Chicago) bucket the suggestion counts toward for the monthly drawing"
+    },
+    "isWinner": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when this suggestion was drawn as the monthly winner"
+    },
+    "drawnAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the monthly drawing selected this suggestion"
+    }
+  },
+  "required": [
+    "category",
+    "message"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

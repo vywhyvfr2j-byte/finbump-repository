@@ -1,0 +1,417 @@
+{
+  "name": "Trip",
+  "type": "object",
+  "properties": {
+    "tripId": {
+      "type": "string",
+      "description": "Stable client-generated id shared across both paired partners"
+    },
+    "name": {
+      "type": "string"
+    },
+    "destination": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "string"
+    },
+    "endDate": {
+      "type": "string"
+    },
+    "who": {
+      "type": "string"
+    },
+    "tripType": {
+      "type": "string",
+      "description": "Up to three trip types the host picked (e.g. Beach, Mountain, Fishing), kept as one comma-separated string \u2014 the same shape the meal planner uses for cuisines."
+    },
+    "personId": {
+      "type": "string",
+      "description": "Id of the Person this trip is tied to (empty = unassigned)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Small freeform notes for the trip"
+    },
+    "budgetLimit": {
+      "type": "number",
+      "description": "Optional trip-level spending cap used by the budget tracker"
+    },
+    "shared": {
+      "type": "boolean",
+      "default": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planning",
+        "confirmed",
+        "ongoing",
+        "done",
+        "cancelled"
+      ],
+      "default": "planning",
+      "description": "planning = collecting everyone's input; confirmed = a plan is locked in; ongoing = the trip is happening; done = it's over; cancelled = called off"
+    },
+    "hostName": {
+      "type": "string",
+      "description": "Denormalized display name of the owner who invited the travelers"
+    },
+    "travelers": {
+      "type": "array",
+      "description": "Everyone invited to collaborate on this trip, each with a private token that authorizes their own response page",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "personId": {
+            "type": "string",
+            "description": "Id of the host's Person record when picked from their connections"
+          },
+          "token": {
+            "type": "string",
+            "description": "Opaque private token authorizing this traveler's public response page"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "editor",
+              "viewer"
+            ],
+            "default": "editor"
+          },
+          "invitedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "respondedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reminderOptOut": {
+            "type": "boolean",
+            "default": false
+          },
+          "response": {
+            "type": "object",
+            "properties": {
+              "coming": {
+                "type": "string",
+                "enum": [
+                  "yes",
+                  "maybe",
+                  "no"
+                ],
+                "description": "The traveler's RSVP"
+              },
+              "dates": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Dates the traveler is free to travel (YYYY-MM-DD)"
+              },
+              "destinations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Destination ideas the traveler suggested"
+              },
+              "budget": {
+                "type": "string",
+                "description": "Per-person budget band"
+              },
+              "travelStyle": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Adventure, Relaxation, Culture, Food, Nature, City, Beach, Nightlife"
+              },
+              "dietary": {
+                "type": "string"
+              },
+              "interests": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "aiPlan": {
+      "type": "object",
+      "description": "The AI-recommended trip plan derived from everyone's answers",
+      "properties": {
+        "destination": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "itinerary": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "day": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "activities": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "stays": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "why": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "eats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "why": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "budgetPerPerson": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "fitScore": {
+          "type": "number"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "string"
+              },
+              "why": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "aiGeneratedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reservations": {
+      "type": "array",
+      "description": "Collaborative reservation suggestions anyone invited to the trip can add \u2014 restaurants, activities, stays \u2014 so the host and travelers can see and weigh options together in one shared list.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "restaurant",
+              "activity",
+              "stay",
+              "transport",
+              "other"
+            ],
+            "default": "restaurant"
+          },
+          "name": {
+            "type": "string"
+          },
+          "dateTime": {
+            "type": "string",
+            "description": "Optional date or date/time for the reservation"
+          },
+          "partySize": {
+            "type": "number",
+            "description": "Optional party size"
+          },
+          "location": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "suggestedBy": {
+            "type": "string",
+            "description": "Display name of whoever suggested it (traveler name or host)"
+          },
+          "travelerId": {
+            "type": "string",
+            "description": "Id of the traveler who suggested it, taken from the trip's travelers list and written server-side from their invite token, so a suggestion can be matched to its author even when two travelers share a display name. Empty for host suggestions."
+          },
+          "byHost": {
+            "type": "boolean",
+            "default": false,
+            "description": "True when the host suggested it, false for a traveler"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "itinerary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "flights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "hotels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "rentalCars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "packingList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "linkedGiftIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "tripId",
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

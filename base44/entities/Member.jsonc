@@ -1,0 +1,60 @@
+{
+  "name": "Member",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Id of the app user this founding-member number belongs to. One record per account."
+    },
+    "email": {
+      "type": "string",
+      "description": "Normalised (lower-case) email the number was derived from"
+    },
+    "fullName": {
+      "type": "string",
+      "description": "Display name captured when the number was assigned"
+    },
+    "number": {
+      "type": "string",
+      "description": "Zero-padded six-digit founding-member number, e.g. 000002. Assigned server-side from the reserved founding emails and sign-up order, never by the member."
+    },
+    "joinedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Sign-up date the number was derived from"
+    }
+  },
+  "required": [
+    "userId",
+    "number"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.userId": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

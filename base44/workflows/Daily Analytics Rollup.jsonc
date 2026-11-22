@@ -1,0 +1,45 @@
+{
+  "name": "Daily Analytics Rollup",
+  "description": "Rolls up yesterday's analytics events into one DailyAnalyticsRollup row each night at 1am CT so the analytics functions read ~30 tiny rows instead of scanning millions of raw events \u2014 keeping them under 3s at 15k customers.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 1 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "daily_analytics_rollup",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "rollup": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "rollup-daily-analytics",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Roll up yesterday's analytics",
+            "description": "Aggregate into one DailyAnalyticsRollup row"
+          }
+        }
+      }
+    ]
+  }
+}

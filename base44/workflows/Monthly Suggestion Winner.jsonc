@@ -1,0 +1,45 @@
+{
+  "description": "On the 1st of each month at 9am CT, randomly draws one app-improvement suggestion from the previous month, emails the administrator the winner's details, then emails the winner about their prize \u2014 their choice of a $50 gift card or a lifetime membership. The admin arranges the chosen award with the winner.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "monthly_suggestion_winner",
+      "version": "1",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "draw": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "draw-suggestion-winner",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Draw monthly suggestion winner",
+            "description": "Randomly pick a winner from last month's suggestions, notify admin then winner"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Monthly Suggestion Winner",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 1 * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

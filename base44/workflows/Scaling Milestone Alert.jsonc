@@ -1,0 +1,44 @@
+{
+  "name": "Scaling Milestone Alert",
+  "description": "Weekly check that emails the admin the sharding requirement + solution once the user count approaches 3,000.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "scaling_milestone_alert",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "check_milestone": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "scaling-milestone-alert"
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Check scaling milestone",
+            "description": "Email admin if user count nears 3,000"
+          }
+        }
+      }
+    ]
+  },
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * 1",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

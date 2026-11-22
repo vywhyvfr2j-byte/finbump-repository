@@ -1,0 +1,90 @@
+{
+  "name": "SupportMessage",
+  "type": "object",
+  "properties": {
+    "senderName": {
+      "type": "string",
+      "description": "Display name of the user who sent the message"
+    },
+    "senderEmail": {
+      "type": "string",
+      "description": "Email of the user who sent the message, for follow-up"
+    },
+    "message": {
+      "type": "string",
+      "description": "The user's freeform message, if any"
+    },
+    "conversation": {
+      "type": "array",
+      "description": "For chat-originated requests, the full Q&A conversation so support has context",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "contact_form",
+        "chat"
+      ],
+      "default": "contact_form",
+      "description": "Where the request originated"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "read",
+        "resolved"
+      ],
+      "default": "new"
+    }
+  },
+  "required": [
+    "senderEmail"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "name": "Card",
+  "type": "object",
+  "properties": {
+    "occasion": {
+      "type": "string",
+      "description": "Occasion key: birthday, anniversary, prayer, getwell, graduation, thankyou, thinking, justbecause"
+    },
+    "message": {
+      "type": "string",
+      "description": "The card message text"
+    },
+    "keywords": {
+      "type": "string",
+      "description": "User-entered keywords/tags that shaped the message"
+    },
+    "templateKey": {
+      "type": "string",
+      "description": "Curated visual template key"
+    },
+    "imageUrl": {
+      "type": "string",
+      "description": "Optional AI-generated card art URL (premium feature)"
+    },
+    "personId": {
+      "type": "string",
+      "description": "Id of the Person (contact) this card is for"
+    },
+    "personName": {
+      "type": "string",
+      "description": "Denormalized contact name captured at send time"
+    },
+    "recipientUserId": {
+      "type": "string",
+      "description": "FinBump user id of the recipient. Empty when the contact is not a FinBump user (free tier cannot deliver by SMS)."
+    },
+    "recipientEmail": {
+      "type": "string",
+      "description": "Denormalized recipient email used for resolution"
+    },
+    "senderName": {
+      "type": "string",
+      "description": "Verified sender attribution: the sender's own account name, stamped server-side by send-card from the authenticated session. Never taken from the request."
+    },
+    "senderLabel": {
+      "type": "string",
+      "description": "Optional signature line the sender chose for their greeting (e.g. 'Mom'). A greeting only \u2014 the card always shows senderName as the real sender alongside it."
+    },
+    "delivery": {
+      "type": "string",
+      "enum": [
+        "app",
+        "unavailable"
+      ],
+      "default": "app",
+      "description": "app = delivered in-app to a FinBump user; unavailable = contact is not a user (free tier)"
+    },
+    "readAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the recipient opened the card"
+    },
+    "deliveredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the card was sent"
+    }
+  },
+  "required": [
+    "occasion",
+    "message",
+    "personId"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "data.recipientUserId": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

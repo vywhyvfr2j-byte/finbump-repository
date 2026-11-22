@@ -1,0 +1,67 @@
+{
+  "name": "MessageTemplate",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Short name the user gives this saved message (e.g. 'Thinking of you'), shown on its chip in the quick-reminder box. Empty means the chip falls back to showing the message itself."
+    },
+    "text": {
+      "type": "string",
+      "description": "The support message itself. Tapping its chip in the quick-reminder box fills the message in instantly; the user can also send it to a connection as a card."
+    }
+  },
+  "required": [
+    "text"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

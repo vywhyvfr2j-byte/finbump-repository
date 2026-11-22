@@ -1,0 +1,69 @@
+{
+  "name": "DailyAnalyticsRollup",
+  "type": "object",
+  "properties": {
+    "dateKey": {
+      "type": "string",
+      "description": "YYYY-MM-DD Chicago-local date this rollup covers"
+    },
+    "activeUserIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Distinct user ids that generated at least one analytics event this day"
+    },
+    "activeUserCount": {
+      "type": "number",
+      "description": "activeUserIds.length, denormalized for quick single-day reads"
+    },
+    "totalEvents": {
+      "type": "number",
+      "description": "Total AnalyticsEvent records generated this day"
+    },
+    "featureCounts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      },
+      "description": "Map of analytics feature -> event count this day"
+    },
+    "eventCounts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      },
+      "description": "Map of analytics eventName -> event count this day"
+    },
+    "rolledUpAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this rollup was last computed"
+    }
+  },
+  "required": [
+    "dateKey"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

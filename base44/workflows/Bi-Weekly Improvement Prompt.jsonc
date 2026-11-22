@@ -1,0 +1,45 @@
+{
+  "name": "Bi-Weekly Improvement Prompt",
+  "description": "Every Monday at 8am (America/Chicago) the function runs; on alternating (on) Mondays it asks the admin how the app could be improved for the average user, based on their basic needs and priorities. It generates concrete AI suggestions with details of recommended changes, stores them as an in-app admin insight (notification), and emails the admin a stand-alone summary. Off-week runs skip idempotently, so a new prompt arrives every two weeks.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 8 * * 1",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "bi_weekly_improvement_prompt",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "generate_prompt": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "weekly-improvement-prompt",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Generate bi-weekly improvement ideas",
+            "description": "AI suggestions + admin email + in-app insight (alternating Mondays)"
+          }
+        }
+      }
+    ]
+  }
+}

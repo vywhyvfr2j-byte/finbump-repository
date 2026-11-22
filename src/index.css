@@ -1,0 +1,463 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 27 64% 97%;
+    --foreground: 336 5% 20%;
+    --card: 30 50% 99%;
+    --card-foreground: 336 5% 20%;
+    --popover: 30 50% 99%;
+    --popover-foreground: 336 5% 20%;
+    --primary: 9 52% 62%;
+    --primary-foreground: 30 50% 98%;
+    --secondary: 159 15% 55%;
+    --secondary-foreground: 336 30% 12%;
+    --muted: 27 40% 94%;
+    --muted-foreground: 336 8% 38%;
+    --accent: 30 78% 71%;
+    --accent-foreground: 336 5% 20%;
+    --destructive: 0 66% 47%;
+    --destructive-foreground: 40 50% 98%;
+    /* Status ink. Dark enough to read as text on the warm surface, and paired
+       with a light counterpart in .dark so the same token works on both. */
+    --success: 158 62% 30%;
+    --success-foreground: 0 0% 100%;
+    --warning: 30 86% 32%;
+    --warning-foreground: 0 0% 100%;
+    --border: 27 30% 90%;
+    --input: 27 30% 90%;
+    --ring: 9 52% 62%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --font-heading: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 152 58% 64%;
+    --success-foreground: 150 60% 10%;
+    --warning: 38 92% 66%;
+    --warning-foreground: 30 60% 10%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body {
+    overscroll-behavior-y: none;
+  }
+
+  /* iOS WebView: every nested scroller — sheets, drawers, lists, carousels,
+     chat threads — keeps its bounce inside itself. Without this, a list
+     scrolled to its end drags the page behind it and the whole screen
+     rubber-bands, which reads as a web page rather than a native app. Window
+     scrolling itself is untouched, so pull-to-refresh still works. */
+  [class*="overflow-auto"],
+  [class*="overflow-y-auto"],
+  [class*="overflow-x-auto"],
+  [class*="overflow-scroll"],
+  [class*="overflow-y-scroll"],
+  [class*="overflow-x-scroll"],
+  [class*="overscroll-"] {
+    overscroll-behavior: none;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    -webkit-font-smoothing: antialiased;
+    /* Page transitions slide the incoming screen in from one side. `clip`
+       (unlike `hidden`) contains that travel without creating a scroll
+       container, so the sticky headers inside pages keep sticking. */
+    overflow-x: clip;
+  }
+
+  button,
+  a,
+  nav,
+  header,
+  [role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* WCAG 2.4.7: Ensure keyboard focus is always visible. Many shadcn
+     components set outline:none; this restores a high-contrast ring for
+     keyboard users via :focus-visible without affecting mouse clicks. */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* FinBump brand gradient (Teal -> Coral -> Gold) applied to every
+     lucide icon app-wide. CSS overrides the lucide stroke presentation
+     attribute, so icons render in the brand gradient regardless of
+     parent text color. */
+  svg.lucide {
+    stroke: url(#finbump-gradient);
+    stroke-width: 2.25;
+  }
+}
+
+@layer utilities {
+  /* Android / Play readiness: nothing the user reads as a label, chip, status
+     or timestamp renders below 14px. Older markup used arbitrary 8px–13.5px
+     sizes across ~180 files; this floor re-points every one of those utilities
+     at 14px so each of them (and any future copy) lands on the accessible
+     minimum, without changing line-height, so tight rows still fit 375px. The
+     matching floor for the text-xs scale lives in tailwind.config.js. */
+  .text-\[8px\],
+  .text-\[9px\],
+  .text-\[10px\],
+  .text-\[11px\],
+  .text-\[12px\],
+  .text-\[12\.5px\],
+  .text-\[13px\],
+  .text-\[13\.5px\] {
+    font-size: 0.875rem;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  /* Check-off reward: the tick pops once, then settles. */
+  .ks-check-pop {
+    animation: ks-check-pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.25);
+  }
+  @keyframes ks-check-pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.22); }
+    65% { transform: scale(0.96); }
+    100% { transform: scale(1); }
+  }
+
+  /* Seasonal / holiday icon animations */
+  .ks-light { animation: ks-flash 1.4s ease-in-out infinite; }
+  .ks-flame { animation: ks-flicker 0.5s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom center; }
+  .ks-rays { animation: ks-spin-slow 16s linear infinite; transform-box: fill-box; transform-origin: center; }
+  .ks-sway { animation: ks-sway 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom center; }
+  .ks-beat { animation: ks-beat 1.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  .ks-twinkle { animation: ks-twinkle 1.8s ease-in-out infinite; }
+  .ks-burst { animation: ks-burst 1.8s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  .ks-float { animation: ks-float 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  .ks-snow { animation: ks-snowfall 2.6s linear infinite; }
+  .ks-fin-wave { animation: ks-fin-wave 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom center; }
+  .ks-dolphin-bob { animation: ks-dolphin-bob 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+
+  @keyframes ks-flash { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+  @keyframes ks-flicker { 0%, 100% { opacity: 0.6; transform: scaleY(1); } 30% { opacity: 1; transform: scaleY(1.12); } 60% { opacity: 0.75; transform: scaleY(0.95); } }
+  @keyframes ks-spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes ks-sway { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+  @keyframes ks-beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.15); } 30% { transform: scale(1); } 45% { transform: scale(1.1); } 60% { transform: scale(1); } }
+  @keyframes ks-twinkle { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+  @keyframes ks-burst { 0% { transform: scale(0.3); opacity: 0; } 25% { opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
+  @keyframes ks-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes ks-snowfall { 0% { transform: translateY(-6px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(12px); opacity: 0; } }
+  @keyframes ks-fin-wave { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(9deg); } }
+  @keyframes ks-dolphin-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  /* Theme-token brand gradient for surfaces that carry near-white text.
+     Light mode adds a 35% scrim, because the bright accent end of the gradient
+     is too light for white text on its own (WCAG AA 1.4.3); dark mode pairs
+     light tokens with dark ink, so it needs no scrim. */
+  .ks-brand-gradient {
+    background-image: linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--accent)));
+  }
+  html:not(.dark) .ks-brand-gradient {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+      linear-gradient(to bottom right, hsl(var(--primary)), hsl(var(--accent)));
+  }
+  /* Keyboard-only "skip to content" link: off-screen until it takes focus, when
+     it becomes the first visible tab stop. Written by hand rather than as
+     sr-only + not-sr-only so the reveal never depends on clip vs clip-path. */
+  .ks-skip-link {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  .ks-skip-link:focus {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 8px 16px;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+    z-index: 100;
+  }
+  /* Shared card tint. Was a hardcoded sage rgba inline style on dozens of
+     cards; driven by the --secondary token now, so the same card reads
+     correctly on the warm light surface and on the dark surface. */
+  .ks-card-tint {
+    background-color: hsl(var(--secondary) / 0.18);
+  }
+  .dark .ks-card-tint {
+    background-color: hsl(var(--secondary) / 0.4);
+  }
+  .shadow-card {
+    box-shadow: 0 1px 3px 0 rgba(120, 70, 50, 0.07), 0 1px 2px -1px rgba(120, 70, 50, 0.04);
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Tap target floor for dense controls. A 20–28px icon or check circle stays
+     that size visually, but its hit area grows to at least 44×44 around the
+     centre (the Android/iOS minimum), so a thumb can hit it in a tight row
+     without the layout changing. */
+  /* Use together with `relative` (or on an already-positioned element). */
+  .ks-hit::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 2.75rem);
+    height: max(100%, 2.75rem);
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+  }
+
+  /* Accessibility: high contrast mode */
+  /* Accessibility: high contrast mode. The text tokens live here; the boundary
+     tokens (--border/--input) are re-inked by useThemeApplier instead, because
+     that hook writes them inline and inline styles beat a class rule. */
+  .ks-high-contrast {
+    --muted-foreground: 336 10% 25%;
+    --foreground: 336 10% 12%;
+  }
+  /* On dark surfaces the same idea pairs with light ink (WCAG 1.4.3, 1.4.11) —
+     without this, dark mode + high contrast put dark text on a dark card. */
+  .dark.ks-high-contrast {
+    --foreground: 0 0% 100%;
+    --muted-foreground: 0 0% 88%;
+  }
+  .ks-high-contrast .border-border { border-width: 2px; }
+
+  /* Accessibility: reduce motion */
+  .ks-reduce-motion *,
+  .ks-reduce-motion *::before,
+  .ks-reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Dark mode: fixed palette re-pointed at the theme tokens.
+     A number of surfaces were built with fixed palette utilities — white cards,
+     slate ink, 100-step status tints — that were only ever checked on the warm
+     light background. On the dark surface those turn into dark ink on dark or
+     glare-white panels, which is what makes dark mode feel half-finished.
+     Re-pointing the utilities themselves (rather than editing every call site)
+     covers the whole app at once, including markup written later, and leaves
+     light mode byte-for-byte as it was. Status colors get their light
+     counterparts so a green tick stays green and readable, not muddy. */
+  .dark .bg-white {
+    background-color: hsl(var(--card));
+  }
+  .dark .bg-slate-50,
+  .dark .bg-slate-100 {
+    background-color: hsl(var(--muted));
+  }
+  .dark .bg-slate-200 {
+    background-color: hsl(var(--border));
+  }
+  .dark .hover\:bg-slate-50:hover {
+    background-color: hsl(var(--muted));
+  }
+  .dark .border-slate-100,
+  .dark .border-slate-200,
+  .dark .border-slate-300,
+  .dark .hover\:border-slate-300:hover {
+    border-color: hsl(var(--border));
+  }
+  .dark .text-slate-900,
+  .dark .text-slate-800,
+  .dark .text-slate-700 {
+    color: hsl(var(--foreground));
+  }
+  .dark .text-slate-600,
+  .dark .text-slate-500 {
+    color: hsl(var(--muted-foreground));
+  }
+  .dark .bg-slate-500\/15 {
+    background-color: hsl(var(--muted-foreground) / 0.2);
+  }
+  /* Spinners drawn as a light ring with a dark head. */
+  .dark .border-slate-200 {
+    border-color: hsl(var(--border));
+  }
+  .dark .border-t-slate-800 {
+    border-top-color: hsl(var(--foreground));
+  }
+
+  /* Success */
+  .dark .text-emerald-500,
+  .dark .text-emerald-600,
+  .dark .text-emerald-700,
+  .dark .text-green-600,
+  .dark .text-green-700 {
+    color: hsl(var(--success));
+  }
+  .dark .bg-emerald-500,
+  .dark .bg-emerald-600,
+  .dark .bg-green-500,
+  .dark .bg-green-600 {
+    background-color: hsl(var(--success));
+  }
+  .dark .bg-emerald-50,
+  .dark .bg-emerald-100,
+  .dark .bg-green-100,
+  .dark .bg-emerald-500\/10,
+  .dark .bg-emerald-500\/15 {
+    background-color: hsl(var(--success) / 0.18);
+  }
+  .dark .border-emerald-500 {
+    border-color: hsl(var(--success) / 0.7);
+  }
+  .dark .ring-emerald-100 {
+    --tw-ring-color: hsl(var(--success) / 0.35);
+  }
+
+  /* Warning */
+  .dark .text-amber-600,
+  .dark .text-amber-700,
+  .dark .text-amber-800 {
+    color: hsl(var(--warning));
+  }
+  .dark .bg-amber-400,
+  .dark .bg-amber-500 {
+    background-color: hsl(var(--warning));
+  }
+  .dark .bg-amber-50,
+  .dark .bg-amber-100 {
+    background-color: hsl(var(--warning) / 0.18);
+  }
+  .dark .border-amber-200 {
+    border-color: hsl(var(--warning) / 0.4);
+  }
+  .dark .ring-amber-100 {
+    --tw-ring-color: hsl(var(--warning) / 0.35);
+  }
+
+  /* Danger. The destructive token is a dark red meant to be a fill, so it
+     cannot serve as ink on the dark surface; this uses a light red instead. */
+  .dark .text-red-600,
+  .dark .text-red-700,
+  .dark .text-red-800 {
+    color: hsl(0 82% 74%);
+  }
+  .dark .bg-red-500 {
+    background-color: hsl(0 68% 56%);
+  }
+  .dark .bg-red-50,
+  .dark .bg-red-100 {
+    background-color: hsl(0 70% 60% / 0.2);
+  }
+  .dark .border-red-200 {
+    border-color: hsl(0 70% 60% / 0.4);
+  }
+  .dark .ring-red-100 {
+    --tw-ring-color: hsl(0 70% 60% / 0.35);
+  }
+}
+
+/* Printing: a page that marks its content .ks-print-area prints that content on
+   its own, without the app shell around it (nav, header, buttons). Each lesson
+   block is kept whole, so a lesson never splits across two sheets. */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .ks-print-area,
+  .ks-print-area * {
+    visibility: visible;
+  }
+
+  .ks-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0;
+  }
+
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  .ks-print-lesson {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-color: #d8d0c9;
+  }
+
+  body {
+    background: #ffffff;
+  }
+}

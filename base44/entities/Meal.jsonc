@@ -1,0 +1,267 @@
+{
+  "name": "Meal",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Name of the gathering, e.g. 'Friday dinner with the Baileys'"
+    },
+    "hostName": {
+      "type": "string",
+      "description": "Denormalized display name of the host who created the meal"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "confirmed",
+        "done",
+        "cancelled"
+      ],
+      "default": "proposed",
+      "description": "proposed = gathering invitees' answers; confirmed = a plan is locked in; done = the date has passed; cancelled = called off"
+    },
+    "area": {
+      "type": "string",
+      "description": "Area or neighborhood the host suggested"
+    },
+    "cuisine": {
+      "type": "string",
+      "description": "Food type or cuisine the host suggested"
+    },
+    "budget": {
+      "type": "string",
+      "description": "Host's suggested per-person budget band"
+    },
+    "proposedDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional date/time the host floated to the group"
+    },
+    "confirmedDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The agreed date/time once the meal is confirmed"
+    },
+    "venueName": {
+      "type": "string"
+    },
+    "venueAddress": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string",
+      "description": "The host's personal message to the group, included in the invite email"
+    },
+    "menuItems": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Dishes or menu items planned for this gathering, e.g. loaded from a saved meal template"
+    },
+    "participants": {
+      "type": "array",
+      "description": "Everyone invited to this meal, including the host's answers when they take part",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "description": "FinBump user id when the invitee already has an account"
+          },
+          "personId": {
+            "type": "string",
+            "description": "Id of the host's Person record for this invitee, when picked from their connections"
+          },
+          "token": {
+            "type": "string",
+            "description": "Opaque private token that authorizes this person's public response page"
+          },
+          "invitedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "respondedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reminderOptOut": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, this person has asked not to receive further reminder emails"
+          },
+          "response": {
+            "type": "object",
+            "properties": {
+              "coming": {
+                "type": "string",
+                "enum": [
+                  "yes",
+                  "maybe",
+                  "no"
+                ],
+                "description": "The invitee's RSVP: yes = coming, maybe = unsure, no = can't make it. Empty or absent for answers given before the question existed."
+              },
+              "slots": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "cuisines": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "areas": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "budget": {
+                "type": "string"
+              },
+              "dietary": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "participantUserIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Denormalized FinBump user ids for invitees who already have accounts. Informational only \u2014 it deliberately grants NO read access, because this record holds every invitee's private invite token, email address and answers, and invitees reach their invitation through their own emailed link instead."
+    },
+    "aiPlan": {
+      "type": "object",
+      "description": "The AI-recommended plan derived from everyone's answers",
+      "properties": {
+        "venueName": {
+          "type": "string"
+        },
+        "venueAddress": {
+          "type": "string"
+        },
+        "cuisine": {
+          "type": "string"
+        },
+        "area": {
+          "type": "string"
+        },
+        "dateTime": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "fitScore": {
+          "type": "number"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "venueName": {
+                "type": "string"
+              },
+              "cuisine": {
+                "type": "string"
+              },
+              "why": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "aiGeneratedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastReminderAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Throttles reminder emails to at most one per day per meal"
+    },
+    "remindersSent": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

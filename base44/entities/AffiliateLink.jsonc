@@ -1,0 +1,53 @@
+{
+  "name": "AffiliateLink",
+  "type": "object",
+  "properties": {
+    "occasion": {
+      "type": "string",
+      "description": "Occasion key this buy link is for: birthday, anniversary, gotcha day, prayer support, health check-in, other"
+    },
+    "category": {
+      "type": "string",
+      "description": "Optional tone/category refinement (Funny, Romantic, Sentimental, Serious, Age-appropriate, Religious, Heartfelt). Empty string = the default link for the occasion."
+    },
+    "url": {
+      "type": "string",
+      "description": "Affiliate buy URL generated from the dashboard link builder (Amazon Associates, Etsy/Awin). Used as-is so the dashboard's tracking tag is preserved."
+    },
+    "label": {
+      "type": "string",
+      "description": "Button label shown to users (e.g. 'Buy a birthday card')"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Only active links are shown to users. Toggle off to pause without deleting."
+    },
+    "sortOrder": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "occasion",
+    "url"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

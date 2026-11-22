@@ -1,0 +1,59 @@
+{
+  "name": "EmailProbe",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Id of the user who ran the account-existence lookup"
+    },
+    "windowKey": {
+      "type": "string",
+      "description": "Always the literal 'lifetime': each account has exactly ONE ledger row carrying both lookup budgets, so the hourly counter has a stable home no burst can re-create. Rows left by the earlier per-hour design are ignored."
+    },
+    "hourlyWindowKey": {
+      "type": "string",
+      "description": "The hour bucket the two counters below belong to. Moving to a newer bucket is what resets the hourly allowance on the hour."
+    },
+    "hourlyCount": {
+      "type": "number",
+      "description": "New addresses charged during hourlyWindowKey. Only ever moved by an atomic, room-checked increment, so parallel requests cannot each spend the same allowance."
+    },
+    "probedEmails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Distinct contact emails already charged in hourlyWindowKey, so re-checking the same address within the hour stays free. Replaced with a clean list when the hour rolls over."
+    },
+    "chargedCount": {
+      "type": "number",
+      "description": "All-time count of distinct contact addresses charged against this account's lifetime lookup budget. Additive only, so the ceiling cannot be reset."
+    }
+  },
+  "required": [
+    "userId",
+    "windowKey"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

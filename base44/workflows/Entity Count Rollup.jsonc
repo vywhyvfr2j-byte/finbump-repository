@@ -1,0 +1,45 @@
+{
+  "description": "Counts all user-facing entities nightly at 2am America/Chicago and stores the totals in a single EntityCountRollup row so the admin analytics report reads one row instead of 13 full-table scans.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "entity_count_rollup",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "rollup_entity_counts": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "rollup-entity-counts",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Roll up entity counts",
+            "description": "Count all entities and store in EntityCountRollup"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Entity Count Rollup",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 2 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

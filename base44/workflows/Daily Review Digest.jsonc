@@ -1,0 +1,45 @@
+{
+  "description": "Emails the admin a daily summary of new app reviews (in-app, Apple App Store, Google Play) from the last 24 hours, including the all-time average (8am America/Chicago).",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "daily_review_digest",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "send_review_digest": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-review-digest",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send daily review digest",
+            "description": "Email the admin new reviews from the last 24h"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Daily Review Digest",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 8 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

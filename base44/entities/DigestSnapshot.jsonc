@@ -1,0 +1,55 @@
+{
+  "name": "DigestSnapshot",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Account email the daily digest is sent to"
+    },
+    "cadence": {
+      "type": "string",
+      "enum": [
+        "daily",
+        "weekly",
+        "monthly"
+      ]
+    },
+    "subject": {
+      "type": "string",
+      "description": "Pre-built digest subject line"
+    },
+    "body": {
+      "type": "string",
+      "description": "Pre-built plain-text digest body"
+    },
+    "lastBuiltAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastSentAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Server-set: when the workflow last emailed this snapshot (per-day idempotency guard)"
+    }
+  },
+  "required": [
+    "email",
+    "cadence",
+    "subject",
+    "body"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

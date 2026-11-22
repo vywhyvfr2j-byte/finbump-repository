@@ -1,0 +1,99 @@
+{
+  "description": "Emails each user their FinBump digest on their chosen cadence: daily every day, weekly on Mondays, monthly on the 1st (8am America/Chicago). Runs in 4 sequential shards so each invocation stays well under the 5-minute timeout as the user base grows.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "daily_digest",
+      "version": "1.1",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "shard_0": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-scheduled-digest",
+            "args": {
+              "shard": 0,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_1",
+          "x-base44": {
+            "title": "Digest shard 1 of 4",
+            "description": "Email ~25% of eligible snapshots"
+          }
+        }
+      },
+      {
+        "shard_1": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-scheduled-digest",
+            "args": {
+              "shard": 1,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_2",
+          "x-base44": {
+            "title": "Digest shard 2 of 4",
+            "description": "Email ~25% of eligible snapshots"
+          }
+        }
+      },
+      {
+        "shard_2": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-scheduled-digest",
+            "args": {
+              "shard": 2,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_3",
+          "x-base44": {
+            "title": "Digest shard 3 of 4",
+            "description": "Email ~25% of eligible snapshots"
+          }
+        }
+      },
+      {
+        "shard_3": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-scheduled-digest",
+            "args": {
+              "shard": 3,
+              "totalShards": 4
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Digest shard 4 of 4",
+            "description": "Email ~25% of eligible snapshots"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Daily Digest",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 8 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

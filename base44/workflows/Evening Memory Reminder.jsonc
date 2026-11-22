@@ -1,0 +1,99 @@
+{
+  "name": "Evening Memory Reminder",
+  "description": "Sends the evening check-in reminder at 6pm and again at 9pm America/Chicago. The 6pm nudge goes to every user who hasn't captured today's memory moment yet; the 9pm follow-up goes only to whoever still hasn't, so it is a second chance rather than a repeat for people who already answered. Runs in 4 sequential shards so each invocation stays well under the 5-minute timeout as the user base grows. Anyone who turned the reminder off or opted out of push notifications is skipped. Requires a native iOS/Android build with push credentials configured; the in-app evening prompt covers everyone else.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "evening_memory_reminder",
+      "version": "1.2",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "shard_0": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-evening-memory-reminder",
+            "args": {
+              "shard": 0,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_1",
+          "x-base44": {
+            "title": "Reminder shard 1 of 4",
+            "description": "First quarter of users"
+          }
+        }
+      },
+      {
+        "shard_1": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-evening-memory-reminder",
+            "args": {
+              "shard": 1,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_2",
+          "x-base44": {
+            "title": "Reminder shard 2 of 4",
+            "description": "Second quarter of users"
+          }
+        }
+      },
+      {
+        "shard_2": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-evening-memory-reminder",
+            "args": {
+              "shard": 2,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_3",
+          "x-base44": {
+            "title": "Reminder shard 3 of 4",
+            "description": "Third quarter of users"
+          }
+        }
+      },
+      {
+        "shard_3": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-evening-memory-reminder",
+            "args": {
+              "shard": 3,
+              "totalShards": 4
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Reminder shard 4 of 4",
+            "description": "Final quarter of users"
+          }
+        }
+      }
+    ]
+  },
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 18,21 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

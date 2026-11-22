@@ -1,0 +1,116 @@
+/* Public landing page (src/pages/Welcome.jsx) — the hero scene only.
+   Every colour comes from the app's tokens (src/index.css), so the page follows
+   the cream/coral palette and dark mode instead of carrying its own theme. */
+
+.ks-hero {
+  /* The deep band the trust strip sits on; overridden for dark mode below. */
+  --ks-hero-deep: 336 14% 16%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--background)) 32%,
+    hsl(27 58% 94%) 56%,
+    hsl(18 48% 86%) 74%,
+    hsl(9 38% 62%) 90%,
+    hsl(var(--ks-hero-deep)) 100%
+  );
+}
+
+.dark .ks-hero {
+  --ks-hero-deep: 240 6% 7%;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--background)) 40%,
+    hsl(336 10% 22%) 74%,
+    hsl(var(--ks-hero-deep)) 100%
+  );
+}
+
+/* Soft bloom at the funnel's centre, matching where the rings converge. */
+.ks-hero-bloom {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    22% 14% at 50% 48%,
+    hsl(var(--accent) / 0.55) 0%,
+    hsl(var(--accent) / 0) 100%
+  );
+}
+
+/* Concentric rings tilted into perspective so they read as a funnel. */
+.ks-hero-ripple {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  z-index: 0;
+  width: 150%;
+  aspect-ratio: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%) perspective(680px) rotateX(61deg);
+  -webkit-mask-image: radial-gradient(closest-side, #000 56%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 56%, transparent 100%);
+}
+
+.ks-hero-ripple::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    hsl(var(--foreground) / 0) 0 12.5px,
+    hsl(var(--foreground) / 0.14) 13px 14px,
+    hsl(var(--foreground) / 0) 14.5px 15px
+  );
+}
+
+.ks-hero-text,
+.ks-hero-strip {
+  position: relative;
+  z-index: 2;
+}
+
+/* The trust strip always sits on the deep band, so its text is a fixed cream
+   rather than a token that flips in dark mode (where a token would go dark on
+   dark). */
+.ks-hero-strip {
+  color: hsl(30 50% 98%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ks-hero-ripple::before {
+    animation: ks-hero-breathe 7s ease-in-out infinite;
+  }
+
+  .ks-hero-rise {
+    animation: ks-hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+
+@keyframes ks-hero-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes ks-hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

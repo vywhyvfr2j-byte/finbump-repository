@@ -1,0 +1,99 @@
+{
+  "name": "Sunday Nudge",
+  "description": "Every Sunday morning each user gets a gentle summary of the week's upcoming birthdays, anniversaries and events, plus one low-effort three-minute act of kindness, delivered by email and push. Runs in 4 sequential shards so each invocation stays well under the 5-minute timeout as the user base grows, and loads the week's events once for everyone instead of querying per user.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 8 * * 0",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "sunday_nudge",
+      "version": "1.1",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "shard_0": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-weekly-nudge",
+            "args": {
+              "shard": 0,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_1",
+          "x-base44": {
+            "title": "Nudge shard 1 of 4",
+            "description": "First quarter of users"
+          }
+        }
+      },
+      {
+        "shard_1": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-weekly-nudge",
+            "args": {
+              "shard": 1,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_2",
+          "x-base44": {
+            "title": "Nudge shard 2 of 4",
+            "description": "Second quarter of users"
+          }
+        }
+      },
+      {
+        "shard_2": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-weekly-nudge",
+            "args": {
+              "shard": 2,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_3",
+          "x-base44": {
+            "title": "Nudge shard 3 of 4",
+            "description": "Third quarter of users"
+          }
+        }
+      },
+      {
+        "shard_3": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-weekly-nudge",
+            "args": {
+              "shard": 3,
+              "totalShards": 4
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Nudge shard 4 of 4",
+            "description": "Final quarter of users"
+          }
+        }
+      }
+    ]
+  }
+}

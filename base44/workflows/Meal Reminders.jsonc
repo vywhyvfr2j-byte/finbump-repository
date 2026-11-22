@@ -1,0 +1,99 @@
+{
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "meal_reminders",
+      "version": "1.1",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "send_meal_reminders_0": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-meal-reminders",
+            "args": {
+              "shard": 0,
+              "totalShards": 4
+            }
+          },
+          "then": "send_meal_reminders_1",
+          "x-base44": {
+            "title": "Send meal reminders (shard 1 of 4)",
+            "description": "Nudge non-responders and remind confirmed meals"
+          }
+        }
+      },
+      {
+        "send_meal_reminders_1": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-meal-reminders",
+            "args": {
+              "shard": 1,
+              "totalShards": 4
+            }
+          },
+          "then": "send_meal_reminders_2",
+          "x-base44": {
+            "title": "Send meal reminders (shard 2 of 4)",
+            "description": "Nudge non-responders and remind confirmed meals"
+          }
+        }
+      },
+      {
+        "send_meal_reminders_2": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-meal-reminders",
+            "args": {
+              "shard": 2,
+              "totalShards": 4
+            }
+          },
+          "then": "send_meal_reminders_3",
+          "x-base44": {
+            "title": "Send meal reminders (shard 3 of 4)",
+            "description": "Nudge non-responders and remind confirmed meals"
+          }
+        }
+      },
+      {
+        "send_meal_reminders_3": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-meal-reminders",
+            "args": {
+              "shard": 3,
+              "totalShards": 4
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send meal reminders (shard 4 of 4)",
+            "description": "Nudge non-responders and remind confirmed meals"
+          }
+        }
+      }
+    ]
+  },
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 15 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "name": "Meal Reminders",
+  "description": "Daily pass over open group meals: nudges anyone who hasn't answered while the suggested date and time are still far enough out to answer, reminds the group before a confirmed meal, and closes out meals whose date has passed. Runs in 4 sequential shards so each invocation stays inside the timeout as the number of open gatherings grows."
+}

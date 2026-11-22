@@ -1,0 +1,83 @@
+{
+  "name": "PersonalNote",
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "default": "general",
+      "description": "Note category: 'general' for freeform notes, 'appreciation' for the daily appreciation jot, 'memory' for the evening memory-moment answer."
+    },
+    "memoryDate": {
+      "type": "string",
+      "format": "date",
+      "description": "For type 'memory': the local day (YYYY-MM-DD) the moment came from. Keys the once-a-day evening question and the order of the memory timeline."
+    },
+    "personId": {
+      "type": "string",
+      "description": "Id of the Person this note is tied to, so it appears on their contact timeline. Empty = unscoped."
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Pictures kept with this moment (for type 'memory'). Each entry is a private storage URI, shown through a short-lived signed URL, never a public link."
+    }
+  },
+  "required": [
+    "text"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

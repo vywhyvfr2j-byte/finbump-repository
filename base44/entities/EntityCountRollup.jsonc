@@ -1,0 +1,89 @@
+{
+  "name": "EntityCountRollup",
+  "type": "object",
+  "properties": {
+    "dateKey": {
+      "type": "string",
+      "description": "YYYY-MM-DD Chicago date this count rollup was computed"
+    },
+    "totalUsers": {
+      "type": "number"
+    },
+    "totalPeople": {
+      "type": "number"
+    },
+    "totalPets": {
+      "type": "number"
+    },
+    "totalActs": {
+      "type": "number"
+    },
+    "totalEvents": {
+      "type": "number"
+    },
+    "totalGiftIdeas": {
+      "type": "number"
+    },
+    "totalGroups": {
+      "type": "number"
+    },
+    "totalTrips": {
+      "type": "number"
+    },
+    "totalPrayerRequests": {
+      "type": "number"
+    },
+    "totalMilestones": {
+      "type": "number"
+    },
+    "totalPersonalNotes": {
+      "type": "number"
+    },
+    "totalGoals": {
+      "type": "number"
+    },
+    "totalReviews": {
+      "type": "number"
+    },
+    "avgRating": {
+      "type": "number",
+      "description": "Average review rating (1 decimal), computed at rollup time"
+    },
+    "totalPurchases": {
+      "type": "number"
+    },
+    "activeSubscriptions": {
+      "type": "number",
+      "description": "Paid purchases with no canceledAt"
+    },
+    "rolledUpAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "dateKey"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "name": "App Launch Checklist Reminder",
+  "description": "Every Thursday at 8am (America/Chicago) the cadence function resolves the admin recipient and the workflow emails the full app launch checklist under the heading 'App launch checklist'. Stops automatically after four consecutive weekly sends.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 8 * * 4",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "after_count",
+      "ends_on_date": null,
+      "ends_after_count": 4
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "app_launch_checklist_reminder",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "cadence": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "launch-checklist-cadence",
+            "args": {}
+          },
+          "then": "check_send",
+          "x-base44": {
+            "title": "Resolve admin recipient",
+            "description": "Find the admin to email"
+          }
+        }
+      },
+      {
+        "check_send": {
+          "switch": [
+            {
+              "when": "${ .cadence.send == true and .cadence.to != null }",
+              "then": "send_checklist"
+            },
+            {
+              "when": "${ true }",
+              "then": "end"
+            }
+          ],
+          "x-base44": {
+            "title": "Send this week?",
+            "description": "Weekly for four weeks"
+          }
+        }
+      },
+      {
+        "send_checklist": {
+          "call": "send_email",
+          "with": {
+            "template_name": "AppLaunchChecklist",
+            "to": "${ .cadence.to }",
+            "description": "Full 30-step app launch checklist, from define to after launch"
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Email the checklist",
+            "description": "Template: AppLaunchChecklist"
+          }
+        }
+      }
+    ]
+  }
+}

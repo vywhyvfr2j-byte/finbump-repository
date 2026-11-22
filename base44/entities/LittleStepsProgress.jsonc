@@ -1,0 +1,83 @@
+{
+  "name": "LittleStepsProgress",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "FinBump user id this progress belongs to. Written by the app when the user first acts on the Little Steps series, and by the sending function when it records an email."
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The day the series is counted from. Empty while the user is on their original run, in which case their account creation date is the anchor. Set to the restart moment when the user starts Little Steps over from Settings."
+    },
+    "completedDays": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Lesson days (1, 2, 3, 5, 7, 14, 30) the user has opened and acted on. The card shows the earliest unfinished lesson that is due."
+    },
+    "emailedDays": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Lesson days already emailed, so a lesson is never sent twice and a missed day is picked up by the next run."
+    },
+    "stopped": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when the user stopped Little Steps. Hides the in-app lesson and stops the lesson emails until they restart it in Settings."
+    },
+    "emailsEnabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the Little Steps lesson emails are sent to this user. Defaults to on; turned off in Settings."
+    }
+  },
+  "required": [
+    "userId"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

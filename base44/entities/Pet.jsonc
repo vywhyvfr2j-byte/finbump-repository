@@ -1,0 +1,221 @@
+{
+  "name": "Pet",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "ownerId": {
+      "type": "string",
+      "description": "Id of the Person (connection) who owns this pet"
+    },
+    "species": {
+      "type": "string",
+      "description": "e.g. Dog, Cat, Bird, Rabbit"
+    },
+    "breed": {
+      "type": "string"
+    },
+    "birthday": {
+      "type": "string",
+      "format": "date"
+    },
+    "adoptionDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Gotcha day \u2014 the date the pet was adopted"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "photoUrl": {
+      "type": "string"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Gallery of uploaded photos for this pet"
+    },
+    "likes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "details": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ]
+      }
+    },
+    "notify": {
+      "type": "boolean",
+      "default": true
+    },
+    "healthNotes": {
+      "type": "string",
+      "description": "Freeform notes about the pet's health or personal situation"
+    },
+    "healthReminderDays": {
+      "type": "number",
+      "description": "Cadence in days for health check-in reminders (0/null = off)"
+    },
+    "healthReminderEndDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Optional date after which health check-in reminders stop"
+    },
+    "lastHealthCheckIn": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "healthSnoozedUntil": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When set to a future timestamp, the health check-in reminder is temporarily hidden (snoozed) until that time passes."
+    },
+    "prayerEnabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether prayer reminders are enabled for this pet"
+    },
+    "prayerNames": {
+      "type": "string",
+      "description": "Names to pray for"
+    },
+    "prayerReason": {
+      "type": "string",
+      "description": "Reason or intention for prayer"
+    },
+    "prayerReminderDays": {
+      "type": "number",
+      "description": "Cadence in days for prayer reminders (0/null = off)"
+    },
+    "prayerReminderEndDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Optional date after which prayer reminders stop"
+    },
+    "lastPrayedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "prayerSnoozedUntil": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When set to a future timestamp, the prayer reminder is temporarily hidden (snoozed) until that time passes."
+    },
+    "otherNotes": {
+      "type": "string",
+      "description": "Freeform notes for a custom care reminder"
+    },
+    "otherReminderDays": {
+      "type": "number",
+      "description": "Cadence in days for other care check-in reminders (0/null = off)"
+    },
+    "otherReminderEndDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Optional date after which other care reminders stop"
+    },
+    "lastOtherCheckIn": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "remembering": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when this pet has passed away or is no longer in the user's life. Keeps their photos, notes and memories, but replaces birthday, Gotcha Day and care reminders with one annual remembrance reminder."
+    },
+    "remembranceDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The date the user keeps for this pet. Rolls forward every year for the remembrance reminder."
+    },
+    "remembranceNote": {
+      "type": "string",
+      "description": "What the user would like to do on the remembrance day."
+    },
+    "remembranceLeadDays": {
+      "type": "number",
+      "description": "How many days before the remembrance date to start reminding (defaults to 3)."
+    },
+    "remembrancePhotos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Pictures kept with this pet's remembrance date. Each entry is a private storage URI, shown through a short-lived signed URL \u2014 never a public link, and only ever visible to the account owner."
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

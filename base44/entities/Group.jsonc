@@ -1,0 +1,84 @@
+{
+  "name": "Group",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the group, e.g. Tennis Team, Church Friends"
+    },
+    "emoji": {
+      "type": "string",
+      "description": "Emoji icon for the group",
+      "default": "\ud83d\udc65"
+    },
+    "color": {
+      "type": "string",
+      "description": "Tailwind-friendly color key for the group badge/tile",
+      "default": "coral"
+    },
+    "memberIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Ids of the Person records that belong to this group. A person can be in many groups."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional freeform notes about the group"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

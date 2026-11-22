@@ -1,0 +1,82 @@
+{
+  "name": "ReminderDeliveryDaily",
+  "type": "object",
+  "properties": {
+    "dateKey": {
+      "type": "string",
+      "description": "YYYY-MM-DD (America/Chicago) day the reminder run covered. One row per day, channel and shard."
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "push"
+      ],
+      "default": "push",
+      "description": "How the reminder was delivered. Push runs record here; email and in-app reminders are computed on read."
+    },
+    "shard": {
+      "type": "number",
+      "default": 0,
+      "description": "Which slice of the user list this run covered, so a sharded daily job writes one row per slice instead of overwriting."
+    },
+    "totalShards": {
+      "type": "number",
+      "default": 1
+    },
+    "sent": {
+      "type": "number",
+      "default": 0,
+      "description": "Reminders handed to the push provider successfully in this run"
+    },
+    "failed": {
+      "type": "number",
+      "default": 0,
+      "description": "Reminders the push provider refused \u2014 no registered device, or bad credentials. A run where every probe fails means push is broken for everyone."
+    },
+    "skipped": {
+      "type": "number",
+      "default": 0,
+      "description": "Reminders withheld on purpose: quiet hours, or the user turned that reminder off"
+    },
+    "noData": {
+      "type": "number",
+      "default": 0,
+      "description": "Users who had nothing due this run"
+    },
+    "usersReached": {
+      "type": "number",
+      "default": 0,
+      "description": "Users examined in this run"
+    },
+    "recordedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "dateKey",
+    "channel"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

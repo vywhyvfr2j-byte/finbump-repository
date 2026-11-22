@@ -1,0 +1,60 @@
+{
+  "name": "AppConfig",
+  "type": "object",
+  "properties": {
+    "featureFlags": {
+      "type": "object",
+      "description": "Map of feature key to boolean. Missing or true = enabled; false = disabled (kill switch).",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    },
+    "statusMessage": {
+      "type": "string",
+      "description": "Server-controlled banner message pushed to all users. Empty string = no banner."
+    },
+    "statusLevel": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ],
+      "default": "info",
+      "description": "Severity level controlling banner color and icon."
+    },
+    "minimumVersion": {
+      "type": "string",
+      "description": "Minimum app version required. Users below this see a blocking upgrade screen."
+    },
+    "maintenanceMode": {
+      "type": "boolean",
+      "default": false,
+      "description": "When true, all users see a maintenance screen instead of the app."
+    },
+    "rolloutPercentage": {
+      "type": "number",
+      "default": 100,
+      "description": "Percentage of users who can access non-core features (staged rollout)."
+    }
+  },
+  "required": [],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

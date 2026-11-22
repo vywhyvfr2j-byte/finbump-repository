@@ -1,0 +1,37 @@
+{
+  "name": "FinBump — never forget to show up",
+  "short_name": "FinBump",
+  "description": "A digital memory vault to capture, organize, and cherish life's most meaningful moments and personal milestones.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF6F0",
+  "theme_color": "#FAF6F0",
+  "orientation": "portrait",
+  "categories": ["lifestyle", "social", "productivity"],
+  "icons": [
+    {
+      "src": "https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png/v1/fill/w_192,h_192,al_c,q_90/apple-touch-icon-180.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png/v1/fill/w_192,h_192,al_c,q_90/apple-touch-icon-180.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png/v1/fill/w_512,h_512,al_c,q_90/apple-touch-icon-180.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png/v1/fill/w_512,h_512,al_c,q_90/apple-touch-icon-180.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

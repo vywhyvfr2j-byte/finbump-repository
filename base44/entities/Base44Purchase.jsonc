@@ -1,0 +1,120 @@
+{
+  "name": "Base44Purchase",
+  "type": "object",
+  "properties": {
+    "checkoutSessionId": {
+      "type": "string",
+      "description": "Wix checkout session id; correlation key."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "paid",
+        "canceled"
+      ],
+      "default": "pending"
+    },
+    "orderId": {
+      "type": "string",
+      "description": "Wix order id, filled in by the webhook."
+    },
+    "appUserId": {
+      "type": "string",
+      "description": "Base44 app user who initiated checkout."
+    },
+    "buyerEmail": {
+      "type": "string"
+    },
+    "productId": {
+      "type": "string"
+    },
+    "productName": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number",
+      "default": 1
+    },
+    "amount": {
+      "type": "string",
+      "description": "Charged amount in major units, e.g. \"19.99\"."
+    },
+    "amountDueNow": {
+      "type": "string",
+      "description": "What the card is charged at checkout, in major units. \"0.00\" for a 7-day free trial, the full price for a paid or lifetime plan. The webhook validates the approved order's total against this, so a discounted or altered order is never granted access."
+    },
+    "currency": {
+      "type": "string"
+    },
+    "trialIncluded": {
+      "type": "boolean",
+      "description": "True when the checkout carried the 7-day free trial (first charge on day 8). False when the member chose to pay today instead, which is never a trial. Written by create-checkout from the server-side product definition."
+    },
+    "subscriptionId": {
+      "type": "string"
+    },
+    "subscriptionStatus": {
+      "type": "string",
+      "description": "Latest subscription status read back from Base44 Payments: ACTIVE, CANCELED, ENDED, PAUSED or PENDING. Written by the ORDER_APPROVED grant, approve-cancellation, and the weekly sync-subscription-renewal read."
+    },
+    "autoRenew": {
+      "type": "boolean",
+      "description": "Whether this subscription will renew. Set true when the subscription is granted, set false the moment a cancellation is applied, and corrected by the weekly read of Base44 Payments when the contract exposes its renewal flag."
+    },
+    "subscriptionCheckedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this subscription was last read back from Base44 Payments, so a stale flag is visible rather than trusted."
+    },
+    "paidAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "trialEndDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the 7-day free trial ends (paidAt + 7 days). Used for prorated refund calculations, and cleared when the trial converts to a paid renewal."
+    },
+    "canceledAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "checkoutSessionId",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.appUserId": "{{user.id}}"
+        },
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

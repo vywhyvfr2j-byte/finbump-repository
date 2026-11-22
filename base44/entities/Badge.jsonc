@@ -1,0 +1,59 @@
+{
+  "name": "Badge",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "FinBump user who earned the badge. Stamped server-side by award-badges from the authenticated session, never chosen by the client."
+    },
+    "badgeId": {
+      "type": "string",
+      "description": "Catalog id of the earned badge (see base44/shared/badgeCatalog.ts). One record per user per badge."
+    },
+    "shelf": {
+      "type": "string",
+      "description": "Which shelf the badge belongs to: beginnings, evenings, circle or membership."
+    },
+    "earnedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the badge was awarded. Copied onto the record so the date survives a catalog change."
+    }
+  },
+  "required": [
+    "userId",
+    "badgeId"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.userId": "{{user.id}}"
+        },
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

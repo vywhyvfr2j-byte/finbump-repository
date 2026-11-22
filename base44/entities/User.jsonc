@@ -1,0 +1,80 @@
+{
+  "properties": {
+    "role": {
+      "type": "string",
+      "description": "The role of the user in the app",
+      "enum": [
+        "admin",
+        "user"
+      ]
+    },
+    "nickname": {
+      "type": "string",
+      "description": "What the user asked to be called (My Profile \u2192 Nickname). The Home greeting uses this first and only falls back to the account's full_name, which is the login name. Stored on the account so it survives a cleared browser or a new device."
+    },
+    "pairingCode": {
+      "type": "string",
+      "description": "Code others can share to pair their account with this user"
+    },
+    "partnerUserId": {
+      "type": "string",
+      "description": "ID of the paired partner user, once connected"
+    },
+    "friendCode": {
+      "type": "string",
+      "description": "Separate code for inviting non-partner friends to connect and share basic ******"
+    },
+    "plan": {
+      "type": "string",
+      "description": "Subscription tier; set to 'basic' or 'premium' by the payments webhook after a paid subscription, or by redeeming a pass code. Reverted to 'free' on cancel/expire or when a monthly pass expires.",
+      "enum": [
+        "free",
+        "basic",
+        "premium"
+      ],
+      "default": "free"
+    },
+    "lifetimeTier": {
+      "type": "string",
+      "description": "Lifetime pass tier purchased. When set, the plan stays at its tier permanently with no renewal. 'lifetime-basic' = Basic ******; all others are Premium-tier lifetime.",
+      "enum": [
+        "lifetime-basic",
+        "lifetime-premium-individual",
+        "lifetime-essential",
+        "lifetime-plus",
+        "lifetime-premium",
+        "lifetime-family"
+      ]
+    },
+    "accessApproved": {
+      "type": "boolean",
+      "description": "Whether the user has redeemed an access code to use the app. Admins bypass this gate.",
+      "default": false
+    },
+    "onboarded": {
+      "type": "boolean",
+      "description": "Whether the user has completed the first-run onboarding flow. Persisted to the backend so it survives across browsers and devices.",
+      "default": false
+    },
+    "passCreditsAnnual": {
+      "type": "number",
+      "default": 0,
+      "description": "Remaining annual pass credits the purchaser can issue to others (from a family package)."
+    },
+    "passCreditsMonthly": {
+      "type": "number",
+      "default": 0,
+      "description": "Remaining monthly pass credits the purchaser can issue to others (from a family package)."
+    },
+    "passExpiresAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When a redeemed monthly pass expires; the plan auto-reverts to 'free' after this date."
+    }
+  },
+  "required": [
+    "role"
+  ],
+  "name": "User",
+  "type": "object"
+}

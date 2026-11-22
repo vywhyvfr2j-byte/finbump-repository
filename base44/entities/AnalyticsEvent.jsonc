@@ -1,0 +1,60 @@
+{
+  "name": "AnalyticsEvent",
+  "type": "object",
+  "properties": {
+    "eventName": {
+      "type": "string",
+      "description": "Stable event name, e.g. 'page_view', 'act_completed', 'gift_added'"
+    },
+    "feature": {
+      "type": "string",
+      "description": "Which feature the event belongs to, e.g. 'home', 'prayer', 'gift_tracker', 'chat'"
+    },
+    "userId": {
+      "type": "string",
+      "description": "Id of the user who triggered the event. Stamped server-side by track-analytics-event from the authenticated session, so it cannot be forged by the client."
+    },
+    "userEmail": {
+      "type": "string",
+      "description": "Denormalized email for identifying active users. Stamped server-side by track-analytics-event."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional extra context (e.g. which tab, which person)"
+    }
+  },
+  "required": [
+    "eventName",
+    "feature"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

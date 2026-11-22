@@ -1,0 +1,45 @@
+{
+  "description": "Deletes AnalyticsEvent records older than 90 days and ActCompletion records older than 365 days every night at 3am America/Chicago to prevent unbounded table growth.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "analytics_cleanup",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "cleanup_old_events": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "cleanup-old-analytics",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Delete old analytics + completion records",
+            "description": "Purge AnalyticsEvent (>90d) and ActCompletion (>365d) records"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Analytics Cleanup",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 3 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

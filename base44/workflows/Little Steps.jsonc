@@ -1,0 +1,99 @@
+{
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "description": "Sends the Little Steps learning emails to new users, one lesson per day on days 1, 2, 3, 5, 7, 14 and 30 after signup. Each email links straight to that lesson's steps in the app, and a missed day is picked up by the next run instead of being skipped. Users who stopped the series, or turned the lesson emails off in Settings, are left alone. Runs in 4 sequential shards so each invocation stays well under the 5-minute timeout as the user base grows. The lesson emails are currently paused inside the function itself, so this sends nothing until that switch is turned back on.",
+  "name": "Little Steps",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "little_steps",
+      "version": "1.1",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "shard_0": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-little-steps",
+            "args": {
+              "shard": 0,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_1",
+          "x-base44": {
+            "title": "Lesson shard 1 of 4",
+            "description": "First quarter of users"
+          }
+        }
+      },
+      {
+        "shard_1": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-little-steps",
+            "args": {
+              "shard": 1,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_2",
+          "x-base44": {
+            "title": "Lesson shard 2 of 4",
+            "description": "Second quarter of users"
+          }
+        }
+      },
+      {
+        "shard_2": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-little-steps",
+            "args": {
+              "shard": 2,
+              "totalShards": 4
+            }
+          },
+          "then": "shard_3",
+          "x-base44": {
+            "title": "Lesson shard 3 of 4",
+            "description": "Third quarter of users"
+          }
+        }
+      },
+      {
+        "shard_3": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-little-steps",
+            "args": {
+              "shard": 3,
+              "totalShards": 4
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Lesson shard 4 of 4",
+            "description": "Final quarter of users"
+          }
+        }
+      }
+    ]
+  }
+}

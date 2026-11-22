@@ -1,0 +1,57 @@
+{
+  "name": "FutureUpgrade",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Short description of the upgrade idea"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional longer notes or context"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "idea",
+        "planned",
+        "done"
+      ],
+      "default": "idea"
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "name": "AppReview",
+  "type": "object",
+  "properties": {
+    "rating": {
+      "type": "number",
+      "description": "Star rating from 1 to 5"
+    },
+    "reviewText": {
+      "type": "string",
+      "description": "The reviewer's written feedback"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "in_app",
+        "apple",
+        "google"
+      ],
+      "default": "in_app",
+      "description": "Where the review came from. User-submitted reviews are stamped 'in_app' server-side by submit-review; 'apple'/'google' entries are admin-only manual imports of real store reviews."
+    },
+    "reviewerUserId": {
+      "type": "string",
+      "description": "FinBump user id of the in-app reviewer, stamped server-side by submit-review. Drives read access so a reviewer sees their own review back."
+    },
+    "reviewerName": {
+      "type": "string",
+      "description": "Display name of the reviewer"
+    },
+    "reviewerEmail": {
+      "type": "string",
+      "description": "Email of the reviewer, used by admin to follow up"
+    },
+    "storeHandle": {
+      "type": "string",
+      "description": "For admin-entered real store reviews: the reviewer's store username/handle"
+    },
+    "adminResponse": {
+      "type": "string",
+      "description": "Admin's reply to the review"
+    },
+    "respondedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "responded",
+        "reported"
+      ],
+      "default": "new",
+      "description": "Workflow status: new, responded (admin replied), or reported (flagged)"
+    },
+    "reportReason": {
+      "type": "string",
+      "description": "Reason the review was flagged/reported"
+    },
+    "isManual": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when an admin manually entered a real store review (Apple/Google) rather than a user submitting in-app"
+    }
+  },
+  "required": [
+    "rating",
+    "source"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.reviewerUserId": "{{user.id}}"
+        },
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

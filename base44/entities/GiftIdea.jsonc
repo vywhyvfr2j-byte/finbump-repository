@@ -1,0 +1,112 @@
+{
+  "name": "GiftIdea",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "purchased": {
+      "type": "boolean",
+      "default": false
+    },
+    "purchasedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gifted": {
+      "type": "boolean",
+      "default": false
+    },
+    "giftedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "personId": {
+      "type": "string"
+    },
+    "petId": {
+      "type": "string",
+      "description": "Id of the Pet this gift is for (when the gift is for a pet, personId points to the pet's owner for budget tracking)"
+    },
+    "category": {
+      "type": "string"
+    },
+    "occasion": {
+      "type": "string"
+    },
+    "budget": {
+      "type": "number"
+    },
+    "targetDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The month/occasion this gift is planned for. The budget-vs-spent chart buckets 'budgeted' by this date (falling back to created_date when unset)."
+    },
+    "actualCost": {
+      "type": "number",
+      "description": "The actual amount paid for the gift once purchased. Used by the budget-vs-spent chart and spending summaries for 'spent' (falling back to budget when unset)."
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

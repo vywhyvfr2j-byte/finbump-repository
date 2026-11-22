@@ -1,0 +1,191 @@
+{
+  "name": "UserPreference",
+  "type": "object",
+  "properties": {
+    "birthday": {
+      "type": "string"
+    },
+    "anniversary": {
+      "type": "string"
+    },
+    "zipCode": {
+      "type": "string"
+    },
+    "travelMode": {
+      "type": "boolean",
+      "default": false
+    },
+    "travelDestination": {
+      "type": "string"
+    },
+    "amazonWishlist": {
+      "type": "string"
+    },
+    "likes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "favoriteColor": {
+      "type": "string"
+    },
+    "favoriteFlower": {
+      "type": "string"
+    },
+    "sizeTop": {
+      "type": "string"
+    },
+    "sizeShoe": {
+      "type": "string"
+    },
+    "dietary": {
+      "type": "string"
+    },
+    "loveLanguages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "details": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ]
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "exerciseTypes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Types of exercise the user enjoys (e.g. Walking, Yoga, Strength)."
+    },
+    "exerciseNotes": {
+      "type": "string",
+      "description": "Personal exercise tips and encouragement the user writes for themself."
+    },
+    "exerciseReminderDays": {
+      "type": "number",
+      "description": "Cadence in days for the exercise reminder act (0/null = off)."
+    },
+    "pushNotifications": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the user has daily push notifications on for due acts and care reminders. Defaults to on (opt-out) so the nudge reaches them; turn off in Settings."
+    },
+    "habitNudge": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the user receives the twice-weekly habit nudge (Tuesday and Friday) asking them to finish the acts of support that are due or overdue. Defaults to on; turned off in Settings."
+    },
+    "shoppingLocations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Preferred stores or platforms where the user likes to shop. The AI gift finder picks 1-2 of these and prioritizes finding product links from them."
+    },
+    "language": {
+      "type": "string",
+      "default": "en",
+      "description": "Preferred UI language code (e.g. 'en' for English, 'es' for Spanish)"
+    },
+    "lastMemoryDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The local day (YYYY-MM-DD) the user last answered the evening memory question, so the evening message is not sent again that day. The answers themselves live in PersonalNote with type 'memory'."
+    },
+    "memoryReminderEnabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the daily evening check-in reminder \u2014 the 6pm nudge and its 9pm follow-up to capture a memory moment \u2014 is on. Drives both the in-app evening prompt and the reminder pushes; false silences all of them."
+    },
+    "memoryReminderTime": {
+      "type": "string",
+      "description": "No longer used: the evening check-in reminder fires at fixed times (6pm, then 9pm if the moment is still unwritten). Kept so previously stored values are not lost."
+    },
+    "quietHoursEnabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the user's quiet-hours window is on. While the window is open nothing is delivered \u2014 no push, reminder email, or in-app reminder \u2014 and anything held goes out on the next round after it closes."
+    },
+    "quietHoursStart": {
+      "type": "string",
+      "description": "Start of the quiet window as \"HH:MM\" on the app's reminder clock (US Central). A window may cross midnight, e.g. 21:00 to 07:00."
+    },
+    "quietHoursEnd": {
+      "type": "string",
+      "description": "End of the quiet window as \"HH:MM\" on the app's reminder clock (US Central)."
+    }
+  },
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  },
+  "required": []
+}

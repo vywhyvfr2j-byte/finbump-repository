@@ -1,0 +1,50 @@
+{
+  "name": "CodeAttempt",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Id of the user making the code attempt"
+    },
+    "feature": {
+      "type": "string",
+      "description": "Which code endpoint this attempt was for: connect-pairing, redeem-pass-code, validate-access-code"
+    },
+    "windowKey": {
+      "type": "string",
+      "description": "Fixed time bucket key (epoch ms / window size) so attempts can be counted per window"
+    },
+    "count": {
+      "type": "number",
+      "default": 1,
+      "description": "Number of attempts this user has made in this window for this feature"
+    }
+  },
+  "required": [
+    "userId",
+    "feature",
+    "windowKey"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

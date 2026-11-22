@@ -1,0 +1,44 @@
+{
+  "name": "FoundingMemberReservation",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Id of the app user account this number is reserved for. This is the only thing a reservation is matched on \u2014 never an email address or a display name, both of which a member can change or imitate."
+    },
+    "number": {
+      "type": "number",
+      "description": "The founding-member number held for that account, e.g. 1 for #000001. Reserved numbers sit below the sequential range, so an ordinary signup can never take one."
+    },
+    "note": {
+      "type": "string",
+      "description": "Admin's own reminder for this reservation (why it exists, who it is for). Keep personal contact details out of it."
+    }
+  },
+  "required": [
+    "userId",
+    "number"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

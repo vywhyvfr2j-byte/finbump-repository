@@ -1,0 +1,112 @@
+{
+  "name": "Act",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "intervalDays": {
+      "type": "number",
+      "default": 7
+    },
+    "lastCompleted": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "emoji": {
+      "type": "string"
+    },
+    "person": {
+      "type": "string"
+    },
+    "personId": {
+      "type": "string",
+      "description": "Id of the Person this act is scoped to (robust link that survives name changes)"
+    },
+    "tag": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "act",
+        "prayer",
+        "health",
+        "other"
+      ],
+      "default": "act",
+      "description": "What kind of scheduled item this is: act of kindness, prayer, health & personal, or other"
+    },
+    "nextDue": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Scheduled start date. For recurring items this is the first due date; for one-time items it is the only due date."
+    },
+    "repeat": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the item repeats on a cadence (true) or is one-time (false)"
+    },
+    "sortOrder": {
+      "type": "number",
+      "default": 0
+    },
+    "notify": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

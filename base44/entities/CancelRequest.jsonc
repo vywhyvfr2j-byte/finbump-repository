@@ -1,0 +1,120 @@
+{
+  "name": "CancelRequest",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "The user requesting cancellation"
+    },
+    "userEmail": {
+      "type": "string",
+      "description": "User's email for identification"
+    },
+    "subscriptionId": {
+      "type": "string",
+      "description": "Wix subscription ID"
+    },
+    "purchaseId": {
+      "type": "string",
+      "description": "Base44Purchase ID for reference"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending"
+    },
+    "requestDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "subscriptionStartDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the subscription started (trial start)"
+    },
+    "trialEndDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the trial ended (or null if no trial)"
+    },
+    "isTrial": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the cancellation is during the trial period"
+    },
+    "monthsUsed": {
+      "type": "number",
+      "description": "Months used including current (one day = whole month)"
+    },
+    "effectiveDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Calculated end-of-month cancellation date"
+    },
+    "refundAmount": {
+      "type": "number",
+      "description": "Calculated prorated refund amount"
+    },
+    "annualPrice": {
+      "type": "number",
+      "description": "Annual price for reference"
+    },
+    "adminNotes": {
+      "type": "string",
+      "description": "Optional notes from admin"
+    },
+    "processedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "processedBy": {
+      "type": "string",
+      "description": "Admin user ID who approved/rejected"
+    }
+  },
+  "required": [
+    "userId",
+    "subscriptionId",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.userId": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "$or": [
+        {
+          "data.userId": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

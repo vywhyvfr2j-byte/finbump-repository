@@ -1,0 +1,47 @@
+{
+  "name": "AccessCode",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "The single-use access code string"
+    },
+    "label": {
+      "type": "string",
+      "description": "Optional note about who this code is for"
+    },
+    "usedBy": {
+      "type": "string",
+      "description": "User id who redeemed this code"
+    },
+    "usedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "code"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

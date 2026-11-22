@@ -1,0 +1,78 @@
+{
+  "name": "AdminInsight",
+  "type": "object",
+  "properties": {
+    "weekOf": {
+      "type": "string",
+      "format": "date",
+      "description": "The Monday (YYYY-MM-DD, America/Chicago) that starts the bi-weekly improvement cycle this prompt covers. Each on-week Monday's run creates one row keyed by this date."
+    },
+    "title": {
+      "type": "string",
+      "description": "AI-generated headline naming the theme of this cycle's improvement ideas"
+    },
+    "summary": {
+      "type": "string",
+      "description": "1-3 sentence framing of the average user and their top needs and priorities for this two-week cycle"
+    },
+    "suggestions": {
+      "type": "array",
+      "description": "Concrete improvement recommendations the admin can act on this cycle",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "details": {
+            "type": "string",
+            "description": "The specific change recommended and why it matters to the average user"
+          }
+        },
+        "required": [
+          "title",
+          "details"
+        ]
+      }
+    },
+    "readAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the admin opened this insight on the admin page; once set it stops surfacing as an in-app notification"
+    }
+  },
+  "required": [
+    "weekOf",
+    "title"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

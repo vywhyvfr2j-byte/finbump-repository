@@ -1,0 +1,89 @@
+{
+  "name": "MealTemplate",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Label the host recognizes, e.g. 'Sunday family dinner'"
+    },
+    "title": {
+      "type": "string",
+      "description": "Default gathering name pre-filled from this template"
+    },
+    "venueName": {
+      "type": "string",
+      "description": "The usual restaurant for this gathering, so a favorite place comes back in one tap"
+    },
+    "venueAddress": {
+      "type": "string",
+      "description": "Street address of that restaurant, kept alongside its name"
+    },
+    "location": {
+      "type": "string",
+      "description": "The usual spot or area for this kind of gathering"
+    },
+    "cuisine": {
+      "type": "string",
+      "description": "Usual food type or cuisine"
+    },
+    "budget": {
+      "type": "string",
+      "description": "Usual per-person budget band"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Standing message to the group"
+    },
+    "menuItems": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Go-to dishes or menu items for this gathering"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

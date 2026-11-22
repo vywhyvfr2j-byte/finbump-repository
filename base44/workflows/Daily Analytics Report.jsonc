@@ -1,0 +1,45 @@
+{
+  "description": "Emails the admin a detailed analytics report each morning (8am America/Chicago) with HTML/CSS charts summarizing yesterday's metrics, the previous 7-day week, and all-time content totals \u2014 including active users, events, feature usage, reviews, and revenue.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "daily_analytics_report",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "send_report": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "send-admin-analytics-report",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send daily analytics report",
+            "description": "Email the admin yesterday's + weekly analytics with charts"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Daily Analytics Report",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 8 * * *",
+      "one_time_date": null,
+      "timezone": "America/Chicago",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

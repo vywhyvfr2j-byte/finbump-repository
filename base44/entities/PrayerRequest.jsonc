@@ -1,0 +1,97 @@
+{
+  "name": "PrayerRequest",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string",
+      "maxLength": 40,
+      "description": "The user's own personal need (max 40 characters)"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "prayer",
+        "health",
+        "other"
+      ],
+      "default": "prayer",
+      "description": "Whether this is a prayer, health, or other personal need"
+    },
+    "recipientId": {
+      "type": "string",
+      "description": "Id of the Person this need is sent to directly. Empty means it shows for all synced connections."
+    },
+    "recipientName": {
+      "type": "string",
+      "description": "Denormalized name of the recipient for display"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date",
+      "description": "When the need becomes active (defaults to today)"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date",
+      "description": "When the need expires. Defaults to startDate + 7 days, max startDate + 30 days."
+    },
+    "shared": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this need is visible to synced connections (gated by the friend share toggle)"
+    }
+  },
+  "required": [
+    "description"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
