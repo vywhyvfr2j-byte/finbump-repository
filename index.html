@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Favicon sizes (dark-background app mark) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" />
+
+    <!-- Apple touch icon (iOS home screen) -->
+    <link rel="apple-touch-icon" href="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#FAF6F0" />
+    <meta name="theme-color" content="#FAF6F0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="FinBump" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="app-version" content="1.0.2" />
+    <link rel="manifest" href="/src/components/branding/manifest.json?no-inline" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+    <title>FinBump — never forget to show up</title>
+    <meta name="description" content="FinBump is a quiet keepsake for the people you love: gentle reminders for the birthdays, check-ins and thank-yous that matter, one memory kept each evening. 7-day free trial, no ads ever." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta property="og:site_name" content="FinBump" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://finbump-memory.base44.app/" />
+    <meta property="og:title" content="FinBump — never forget to show up" />
+    <meta property="og:description" content="Gentle reminders for the little things, and a place to keep the moments. 7-day free trial, no ads ever." />
+    <meta property="og:image" content="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/5b637dae3_generated_image.png" />
+    <meta property="og:image:alt" content="FinBump — never forget to show up" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FinBump — never forget to show up" />
+    <meta name="twitter:description" content="Gentle reminders for the little things, and a place to keep the moments. 7-day free trial, no ads ever." />
+    <meta name="twitter:image" content="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/5b637dae3_generated_image.png" />
+
+    <!-- Branded launch screen — replaced when React mounts -->
+    <style>
+      #finbump-splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #FAF6F0;
+        z-index: 9999;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      }
+      .finbump-splash-logo {
+        width: 82px;
+        height: 82px;
+        object-fit: cover;
+        border-radius: 15px;
+        animation: finbump-bob 3.2s ease-in-out infinite;
+      }
+      .finbump-splash-wordmark {
+        margin-top: 14px;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 30px;
+        font-weight: 600;
+        color: #3D2B2B;
+        letter-spacing: -0.02em;
+      }
+      .finbump-splash-tagline {
+        margin-top: 4px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 12px;
+        color: #9A8B7A;
+        letter-spacing: 0.04em;
+      }
+      /* Dark mode launch screen: without this the splash stays warm-cream and
+         flashes bright white before a dark-themed app paints. */
+      @media (prefers-color-scheme: dark) {
+        #finbump-splash { background: #09090b; }
+        .finbump-splash-wordmark { color: #f4f4f5; }
+        .finbump-splash-tagline { color: #a1a1aa; }
+      }
+      .finbump-splash-loader {
+        display: flex;
+        gap: 6px;
+        margin-top: 28px;
+      }
+      .finbump-splash-loader span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #E87878;
+        animation: finbump-dot 1.4s ease-in-out infinite;
+      }
+      .finbump-splash-loader span:nth-child(2) { animation-delay: 0.18s; background: #FDD062; }
+      .finbump-splash-loader span:nth-child(3) { animation-delay: 0.36s; background: #1D7A78; }
+      @keyframes finbump-bob {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+      @keyframes finbump-dot {
+        0%, 80%, 100% { opacity: 0.25; transform: scale(0.7); }
+        40% { opacity: 1; transform: scale(1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .finbump-splash-logo, .finbump-splash-loader span { animation: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- FinBump launch screen — replaced when React mounts -->
+      <div id="finbump-splash">
+        <img class="finbump-splash-logo" src="https://media.base44.com/images/public/6a51288bdcecc77c014539fd/56b61e622_apple-touch-icon-180.png" alt="FinBump" />
+        <span class="finbump-splash-wordmark">FinBump</span>
+        <span class="finbump-splash-tagline">never forget to show up</span>
+        <div class="finbump-splash-loader">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
