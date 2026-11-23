@@ -24,7 +24,7 @@ workflows:
     integrations:
       app_store_connect: FinBump Build Upload
 
-       environment:
+    environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.finbump.app
@@ -67,4 +67,3 @@ workflows:
     publishing:
       app_store_connect:
         auth: integration
-        
