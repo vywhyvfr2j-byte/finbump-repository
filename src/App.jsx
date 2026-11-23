@@ -252,6 +252,24 @@ const AuthenticatedApp = () => {
         />
       );
     }
+    // Any other startup failure (for example the API being unreachable from
+    // inside the native WebView) used to fall through and leave the screen
+    // waiting with no explanation. Say what failed, so a test build shows its
+    // own cause instead of only pulsing.
+    return (
+      <div className="fixed inset-0 flex flex-col items-center justify-center gap-3 px-8 text-center">
+        <p className="font-display text-lg font-semibold">FinBump couldn't start</p>
+        <p className="text-sm text-muted-foreground">
+          {authError.message || 'The app could not reach its server.'}
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-2 min-h-[2.75rem] px-5 rounded-md bg-primary text-primary-foreground text-sm font-medium"
+        >
+          Try again
+        </button>
+      </div>
+    );
   }
 
   return (

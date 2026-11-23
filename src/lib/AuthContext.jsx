@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { clearAppCaches } from '@/lib/appCache';
 import { appParams } from '@/lib/app-params';
+import { API_BASE_URL } from '@/lib/apiBaseUrl';
 import { createAxiosClient } from '@base44/sdk/dist/utils/axios-client';
 
 const AuthContext = createContext();
@@ -27,7 +28,9 @@ export const AuthProvider = ({ children }) => {
       // First, check app public settings (with token if available)
       // This will tell us if auth is required, user not registered, etc.
       const appClient = createAxiosClient({
-        baseURL: `/api/apps/public`,
+        // Absolute: this is the call the startup screen waits on, and a relative
+        // path inside the native WebView answers with the app's own HTML.
+        baseURL: `${API_BASE_URL}/api/apps/public`,
         headers: {
           'X-App-Id': appParams.appId
         },
