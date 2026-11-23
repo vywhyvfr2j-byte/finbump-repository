@@ -71,6 +71,7 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
     "@capacitor/cli": "^8.6.2",
     "@eslint/js": "^9.19.0",
     "@types/node": "^22.13.5",
