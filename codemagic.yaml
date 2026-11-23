@@ -24,14 +24,14 @@ workflows:
     integrations:
       app_store_connect: FinBump Build Upload
 
-    environment:
+       environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.finbump.app
       node: latest
       xcode: latest
 
-        scripts:
+    scripts:
       - name: Install dependencies
         script: |
           npm ci
