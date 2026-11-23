@@ -51,7 +51,9 @@ workflows:
 
       - name: Apply iOS signing profile
         script: |
-          xcode-project use-profiles
+          xcode-project use-profiles \
+            --project "ios/App/App.xcodeproj" \
+            --code-signing-setup-verbose-logging
 
       - name: Build signed FinBump IPA
         script: |
