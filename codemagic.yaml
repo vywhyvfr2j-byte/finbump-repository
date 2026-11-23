@@ -39,7 +39,6 @@ workflows:
       - name: Configure Base44 app
         script: |
           echo "VITE_BASE44_APP_ID=6a51288bdcecc77c014539fd" >> $CM_ENV
-          echo "VITE_BASE44_APP_BASE_URL=https://finbump-memory.base44.app" >> $CM_ENV
 
       - name: Build FinBump web app
         script: |
