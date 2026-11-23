@@ -31,10 +31,14 @@ workflows:
       node: latest
       xcode: latest
 
-    scripts:
+        scripts:
       - name: Install dependencies
         script: |
           npm ci
+
+      - name: Configure Base44 app
+        script: |
+          echo "VITE_BASE44_APP_ID=6a51288bdcecc77c014539fd" >> $CM_ENV
 
       - name: Build FinBump web app
         script: |
@@ -63,3 +67,4 @@ workflows:
     publishing:
       app_store_connect:
         auth: integration
+        
